@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/dream_field
+  redis:
+    host: localhost
+    database: 0
+    port: 6379
+
+app:
+  domain: http://localhost:8080

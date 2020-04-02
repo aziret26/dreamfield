@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
+  redis:
+    host: ${REDIS_HOST}
+    database: ${REDIS_DATABASE}
+    port: ${REDIS_PORT:6379}
+
+app:
+  domain: ${APP_DOMAIN}
