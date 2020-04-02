@@ -1,14 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-apply(plugin = "java")
-apply(plugin = "idea")
-group = "kg.task"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
-
-repositories {
-	mavenCentral()
-}
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 buildscript {
 	repositories {
@@ -25,12 +16,23 @@ buildscript {
 
 plugins {
 	id("org.springframework.boot") version "2.2.6.RELEASE"
-	id("io.spring.dependency-management") version "1.0.9.RELEASE"
+	id("org.jetbrains.kotlin.kapt") version "1.3.71"
 	id("org.jetbrains.kotlin.plugin.noarg") version "1.3.71"
+	id("io.spring.dependency-management") version "1.0.9.RELEASE"
 
 	kotlin("jvm") version "1.3.71"
 	kotlin("plugin.spring") version "1.3.71"
 	kotlin("plugin.jpa") version "1.3.71"
+}
+
+apply(plugin = "java")
+apply(plugin = "idea")
+group = "kg.task"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_11
+
+repositories {
+	mavenCentral()
 }
 
 
@@ -46,6 +48,9 @@ dependencies {
 
 	implementation("io.springfox:springfox-swagger-ui:2.9.2")
 	implementation("io.springfox:springfox-swagger2:2.9.2")
+
+	implementation("com.querydsl:querydsl-jpa:4.2.2")
+	kapt("com.querydsl:querydsl-apt:4.2.2:jpa")
 
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
