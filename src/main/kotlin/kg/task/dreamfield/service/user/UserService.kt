@@ -18,10 +18,13 @@ interface UserService {
 internal class DefaultUserService(
         private val userRepository: UserRepository
 ) : UserService {
+
+    @Transactional(readOnly = true)
     override fun findById(id: Long): User? {
         return userRepository.findByIdOrNull(id)
     }
 
+    @Transactional(readOnly = true)
     override fun getById(id: Long): User {
         return findById(id)
                 ?: throw NotFoundException(User::class, id, "id")

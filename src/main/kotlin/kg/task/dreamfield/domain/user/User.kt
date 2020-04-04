@@ -8,7 +8,7 @@ import javax.persistence.*
 @Inheritance(strategy = InheritanceType.JOINED)
 sealed class User(
 
-        @Column(name = "email", nullable = false)
+        @Column(name = "email", nullable = false, unique = true)
         var email: String,
 
         @Column(name = "password", nullable = false)
@@ -24,7 +24,7 @@ sealed class User(
 ) : BaseEntity()
 
 @Entity
-@Table(name = "users_admin")
+@Table(name = "user_admins")
 class Admin(
         email: String,
         password: String,
@@ -33,7 +33,7 @@ class Admin(
 ) : User(email, password, name, role)
 
 @Entity
-@Table(name = "users_players")
+@Table(name = "user_players")
 class Player(
         email: String,
         password: String,

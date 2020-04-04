@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dream Field</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+<div id="page-content">
+    <div id="user-info"></div>
+</div>
+
+<script src="/script/libs/jquery-3.4.1.min.js"></script>
+<script src="/script/libs/bootstrap.min.js"></script>
+<script src="/script/libs/popper.min.js"></script>
+<script src="/script/models.js"></script>
+<script src="/script/api.js"></script>
+<script src="/script/tools.js"></script>
+
+<script>
+  validateAuthenticated()
+  navigateUserPage()
+  displayUserInfo = () => {
+    let currentAccount = AccountApiRequestHelper.currentAccount
+    $("#user-info").html(`
+    id: ${currentAccount.id} <br/>
+    name: ${currentAccount.name} <br/>
+    email: ${currentAccount.email} <br/>
+    type: ${currentAccount.type} <br/>
+    `)
+  }
+  displayUserInfo()
+</script>
+</body>
+</html>

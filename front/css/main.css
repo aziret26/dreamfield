@@ -1,0 +1,35 @@
+.height-70-window {
+    height: 70vh;
+}
+
+.error-message {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+header {
+    margin-bottom: 2rem;
+}
+
+.clickable:hover {
+    cursor: pointer;
+}
+
+.width-fit-content {
+    width: fit-content;
+}
+.height-fit-content {
+    height: fit-content;
+}
+
+.flex {
+    display: flex;
+}
+
+@media screen and (max-width: 1200px) {
+    .flex {
+        flex-direction: column;
+    }
+}

@@ -1,5 +1,6 @@
 package kg.task.dreamfield.config.security
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,20 +11,22 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
 import java.util.*
 import javax.servlet.http.HttpServletResponse
+import org.springframework.security.core.session.SessionRegistry
 
 
 @Configuration
 @EnableWebSecurity
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 28800)
 class WebSecurityConfig(
-        private val sessionRegistry: Optional<SessionRegistry>
 ) : WebSecurityConfigurerAdapter() {
+
+    @Autowired
+    private lateinit var sessionRegistry: Optional<SessionRegistry>
 
     private companion object {
         private val SWAGGER_ENDPOINTS = arrayOf("/v2/api-docs", "/configuration/ui/**", "/swagger-resources/**", "/configuration/security/**", "/swagger-ui.html", "/webjars/**")

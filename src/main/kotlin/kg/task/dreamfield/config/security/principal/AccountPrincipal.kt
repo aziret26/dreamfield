@@ -12,16 +12,28 @@ sealed class AccountPrincipal(
     abstract val role: RolePrincipal
 }
 
-data class UserPrincipal(
+data class AdminPrincipal(
+        override val id: Long,
+        override val role: RolePrincipal,
+
         val email: String,
 
         @get:JvmName("getPassword_")
         val password: String,
 
-        val permissions: Set<PermissionPrincipal>,
+        val permissions: Set<PermissionPrincipal>
 
-        override val role: RolePrincipal,
-
-        override val id: Long
 
 ) : AccountPrincipal(email, password, permissions)
+
+
+data class PlayerPrincipal(
+        override val id: Long,
+        override val role: RolePrincipal,
+        val email: String,
+
+        @get:JvmName("getPassword_")
+        val password: String,
+
+        val score: Long
+) : AccountPrincipal(email, password, setOf())

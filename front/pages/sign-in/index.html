@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dream Field | Sign in</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<div class="container d-flex justify-content-center align-items-center height-70-window">
+    <div class="">
+        <h3>Авторизуйтесь, пожалуйста</h3>
+        <table>
+            <tr>
+                <td>username</td>
+                <td><input type="text" class="form-control" id="username"></td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td><input type="password" class="form-control" id="password"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <Button class="btn btn-info btn-sm" id="sign-in-btn">Войти</Button>
+                </td>
+            </tr>
+        </table>
+
+        <p class="text-danger" id="credentials-error-message"></p>
+    </div>
+
+</div>
+
+<script src="/script/libs/jquery-3.4.1.min.js"></script>
+<script src="/script/libs/bootstrap.min.js"></script>
+<script src="/script/libs/popper.min.js"></script>
+<script src="/script/models.js"></script>
+<script src="/script/api.js"></script>
+<script src="/script/tools.js"></script>
+<script src="index.js"></script>
+</body>
+</html>

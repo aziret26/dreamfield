@@ -16,5 +16,5 @@ class Role(
 
 enum class RoleCode {
     ADMIN,
-    USER
+    PLAYER
 }

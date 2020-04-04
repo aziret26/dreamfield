@@ -1,0 +1,2 @@
+validateAuthenticated()
+navigateToAdminDir()
