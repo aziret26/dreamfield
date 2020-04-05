@@ -20,7 +20,10 @@ function createUser() {
 }
 
 function onUserCreateSuccess() {
-  $('#add-user-modal').modal('hide')
+  $("#add-user-modal").modal('hide')
+  $("#name").val("")
+  $("#email").val("")
+  $("#password").val("")
 }
 
 function onUserCreateError(e) {
@@ -42,21 +45,6 @@ function hiderErrors() {
   $(".field-message").html("")
   $(".server-message").html("")
 }
-
-let paging = new PaginationPages({
-  divId: "pagination",
-  maxDisplayPages: 5,
-  onClick: (page) => {
-    paging.setCurrentPage(parseInt(page))
-  }
-})
-
-paging.setValues({
-  currentPage: 15,
-  maxPages: 20
-})
-paging.display()
-
 
 function displayPlayers(players, id) {
   if (!players || players.length === 0) {
@@ -91,6 +79,37 @@ function displayPlayers(players, id) {
   return $(`#${id}`).html(result)
 }
 
+function displayAdmins(admins, id) {
+  if (!admins || admins.length === 0) {
+    return "<h3>Ничего не найдено</h3>"
+  }
+
+  let result = `
+<table class="table">
+    <tbody>
+    <tr>
+        <th>Id</th>
+        <th>Имя</th>
+        <th>Email</th>
+        <th>Сохранить</th>
+    </tr>
+`
+  admins.forEach((p) => {
+    result += `
+<tr>
+<td class="align-middle">${p.id}</td>
+<td><input type="text" class="form-control" value="${p.name}"></td>
+<td><input type="text" class="form-control" value="${p.email}"></td>
+<td></td>
+</tr>
+`
+  })
+
+  result += `</tbody></table>`;
+
+  return $(`#${id}`).html(result)
+}
+
 let playerSorting = new Sorting()
 playerSorting.addItem(new SortItem({name: "Id", code: "ID"}))
 playerSorting.addItem(new SortItem({name: "Имя", code: "NAME"}))
@@ -111,11 +130,33 @@ playerFilter.addItem(new FilterText({name: "Имя", code: "NAME"}))
 playerFilter.addItem(new FilterText({name: "Email", code: "EMAIL"}))
 
 
-let playerReq = new RequestForList({
-  sorting: playerSorting,
-  filter: playerFilter,
-  displayContent: displayPlayers,
-  searcher: PlayerApiRequestHelper.search
-})
+$("body").on("click", ".tab-clicker", (e) => {
+  let value = e.currentTarget.getAttribute("tab-value")
+  let newDivId = `search-${value}-content`
+  $("#searcher-content").html(`<div id="${newDivId}"/>`)
 
-playerReq.display()
+  let searchRequest
+
+  if (value === "players") {
+    searchRequest = new RequestForList({
+      sorting: playerSorting,
+      filter: playerFilter,
+      displayContent: displayPlayers,
+      searcher: PlayerApiRequestHelper.search,
+      id: newDivId
+    })
+  }
+  if (value === "admins") {
+    searchRequest = new RequestForList({
+      sorting: adminSorting,
+      filter: adminFilter,
+      displayContent: displayAdmins,
+      searcher: AdminApiRequestHelper.search,
+      id: newDivId
+    })
+  }
+
+  searchRequest.setId(newDivId)
+
+  searchRequest.display()
+})

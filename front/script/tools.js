@@ -354,10 +354,9 @@ class RequestForList extends Displayable {
   paging
   searcher
   contentDisplayer
-
   content
 
-  constructor({id = "search-users", sorting, filter, searcher, displayContent}) {
+  constructor({id, sorting, filter, searcher, displayContent}) {
     super()
     this.id = id
 
@@ -375,6 +374,13 @@ class RequestForList extends Displayable {
     this.contentDisplayer = displayContent
 
     this.paging = new PaginationPages({onClick: this.search, divId: `${this.id}-paging`, pagingCode: this.id})
+
+    this.searchBtnId = `${this.id}-search-btn`
+    // $(`#${this.searchBtnId}`).off("click")
+    $(`#${this.searchBtnId}`).prop('onclick',null).off('click');
+    $("body").on("click", `#${this.searchBtnId}`, () => {
+      this.search()
+    })
 
     this.search()
   }
@@ -398,8 +404,11 @@ class RequestForList extends Displayable {
     $(`#${this.id}`).html(result)
   }
 
-
   search = () => {
+    this.searcher(this.getRequestObject(), this.onSearchSuccess)
+  }
+
+  getRequestObject = () => {
     let result = {}
     result["sorting"] = this.sorting.getRequestObject()
     result["filter"] = this.filter.getRequestObject()
@@ -407,14 +416,16 @@ class RequestForList extends Displayable {
       page: this.paging.currentPage,
       limit: 1
     }
-    this.searcher(result, this.onSearchSuccess)
+    return result
   }
 
   displaySearchBtn = () => {
-    $("body").on("click", "#search-users-btn", () => {
-      this.search()
-    })
-    return `<button class="btn btn-outline-primary height-fit-content" id="search-users-btn">Поиск</button>`
+
+    return `<button class="btn btn-outline-primary height-fit-content search-btn" id="${this.searchBtnId}">Поиск</button>`
+  }
+
+  setId = (id) => {
+    this.id = id
   }
 
   onSearchSuccess = (result) => {

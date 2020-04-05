@@ -61,10 +61,18 @@ class ApiRequestHelper {
 class AdminApiRequestHelper {
   static #url = `${Server.url}/api/v1/admins`
   static #createUrl = `${this.#url}/create`
+  static #searchUrl = `${this.#url}/search`
+
   static requestCreate = (params, onSuccess, onError) => {
     let prp = new PostRequestParams({body: params})
 
     ApiRequestHelper.post(this.#createUrl, prp, onSuccess, onError)
+  }
+
+  static search = (params, onSuccess, onError) => {
+    let prp = new PostRequestParams({body: params})
+
+    ApiRequestHelper.post(this.#searchUrl, prp, onSuccess, onError)
   }
 }
 

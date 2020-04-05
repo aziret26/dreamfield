@@ -2,7 +2,7 @@ package kg.task.dreamfield.service.user
 
 import com.querydsl.core.BooleanBuilder
 import kg.task.dreamfield.domain.user.Player
-import kg.task.dreamfield.domain.user.QAdmin
+import kg.task.dreamfield.domain.user.QPlayer.player
 import kg.task.dreamfield.domain.user.paging.PlayerFilterRequest
 import kg.task.dreamfield.domain.user.paging.PlayerSearchRequest
 import kg.task.dreamfield.domain.user.request.AddPlayerUserRequest
@@ -73,7 +73,7 @@ internal class DefaultPlayerUserService(
     }
 
     private fun search(predicate: BooleanBuilder, filter: PlayerFilterRequest) {
-        filter.email?.let { predicate.and(QAdmin.admin.email.containsIgnoreCase(it)) }
-        filter.name?.let { predicate.and(QAdmin.admin.name.containsIgnoreCase(it)) }
+        filter.email?.let { predicate.and(player.email.containsIgnoreCase(it)) }
+        filter.name?.let { predicate.and(player.name.containsIgnoreCase(it)) }
     }
 }
