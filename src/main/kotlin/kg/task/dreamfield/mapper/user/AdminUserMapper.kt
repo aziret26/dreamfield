@@ -8,15 +8,18 @@ import kg.task.dreamfield.domain.user.paging.AdminFilterRequest
 import kg.task.dreamfield.domain.user.paging.AdminPageRequest
 import kg.task.dreamfield.domain.user.paging.AdminSearchRequest
 import kg.task.dreamfield.domain.user.request.AddAdminUserRequest
-import kg.task.dreamfield.dto.http.user.add.AddAdminUserRequestDto
+import kg.task.dreamfield.domain.user.request.UpdateAdminUserRequest
 import kg.task.dreamfield.dto.http.user.AdminDto
+import kg.task.dreamfield.dto.http.user.add.AddAdminUserRequestDto
 import kg.task.dreamfield.dto.http.user.paging.AdminSearchRequestDto
+import kg.task.dreamfield.dto.http.user.update.UpdateAdminUserRequestDto
 import kg.task.dreamfield.service.user.RoleService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface AdminUserMapper {
     fun toAddAdminUserRequest(requestDto: AddAdminUserRequestDto): AddAdminUserRequest
+    fun toUpdateAdminUserRequest(requestDto: UpdateAdminUserRequestDto): UpdateAdminUserRequest
     fun toAdminDto(admin: Admin): AdminDto
     fun toAdminSearchRequest(requestDto: AdminSearchRequestDto): AdminSearchRequest
 }
@@ -33,6 +36,13 @@ internal class DefaultAdminUserMapper(
                 email = requestDto.email,
                 password = requestDto.password,
                 role = roleService.getByCode(RoleCode.ADMIN)
+        )
+    }
+
+    override fun toUpdateAdminUserRequest(requestDto: UpdateAdminUserRequestDto): UpdateAdminUserRequest {
+        return UpdateAdminUserRequest(
+                name = requestDto.name,
+                email = requestDto.email
         )
     }
 

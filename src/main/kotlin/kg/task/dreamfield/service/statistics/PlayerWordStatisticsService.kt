@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional
 interface PlayerWordStatisticsService {
     fun findById(id: Long): PlayerWordStatistics?
     fun getById(id: Long): PlayerWordStatistics
-    fun findByUser(user: Player): Collection<PlayerWordStatistics>
+    fun findByPlayer(user: Player): Collection<PlayerWordStatistics>
     fun findByWord(word: Word): Collection<PlayerWordStatistics>
-    fun findByUserAndWord(user: Player, word: Word): Collection<PlayerWordStatistics>
+    fun findByPlayerAndWord(user: Player, word: Word): PlayerWordStatistics?
     fun create(player: Player, word: Word): PlayerWordStatistics
     fun attemptFailed(playerWordStatistics: PlayerWordStatistics): PlayerWordStatistics
-    fun attemptSucceeded(playerWordStatistics: PlayerWordStatistics, score: Int, triesCount: Int? = null): PlayerWordStatistics
+    fun attemptSucceeded(playerWordStatistics: PlayerWordStatistics, score: Int): PlayerWordStatistics
 }
 
 @Service
@@ -38,7 +38,7 @@ internal class DefaultPlayerWordStatisticsService(
     }
 
     @Transactional(readOnly = true)
-    override fun findByUser(user: Player): Collection<PlayerWordStatistics> {
+    override fun findByPlayer(user: Player): Collection<PlayerWordStatistics> {
         return playerWordStatisticsRepository.findByPlayer(user)
     }
 
@@ -48,7 +48,7 @@ internal class DefaultPlayerWordStatisticsService(
     }
 
     @Transactional(readOnly = true)
-    override fun findByUserAndWord(user: Player, word: Word): Collection<PlayerWordStatistics> {
+    override fun findByPlayerAndWord(user: Player, word: Word): PlayerWordStatistics? {
         return playerWordStatisticsRepository.findByPlayerAndWord(user, word)
     }
 
@@ -59,7 +59,6 @@ internal class DefaultPlayerWordStatisticsService(
                 player = player,
                 attemptsFailed = 0,
                 attemptsSuccess = 0,
-                bestTriesCount = 0,
                 scoresAchieved = 0
         )
         return playerWordStatisticsRepository.save(playerWordStatistics)
@@ -76,12 +75,10 @@ internal class DefaultPlayerWordStatisticsService(
 
     @Transactional
     override fun attemptSucceeded(playerWordStatistics: PlayerWordStatistics,
-                                  score: Int,
-                                  triesCount: Int?): PlayerWordStatistics {
+                                  score: Int): PlayerWordStatistics {
         return playerWordStatistics.apply {
             attemptsSuccess++
-            triesCount?.let { bestTriesCount = it }
-            scoresAchieved = score
+            scoresAchieved += score
 
             playerWordStatisticsRepository.save(this)
         }

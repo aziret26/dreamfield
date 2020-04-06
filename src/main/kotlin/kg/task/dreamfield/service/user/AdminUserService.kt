@@ -6,6 +6,7 @@ import kg.task.dreamfield.domain.user.QAdmin.admin
 import kg.task.dreamfield.domain.user.paging.AdminFilterRequest
 import kg.task.dreamfield.domain.user.paging.AdminSearchRequest
 import kg.task.dreamfield.domain.user.request.AddAdminUserRequest
+import kg.task.dreamfield.domain.user.request.UpdateAdminUserRequest
 import kg.task.dreamfield.exception.NotFoundException
 import kg.task.dreamfield.repository.findAll
 import kg.task.dreamfield.repository.user.AdminUserRepository
@@ -21,6 +22,7 @@ interface AdminUserService {
     fun findByEmail(email: String): Admin?
     fun getByEmail(email: String): Admin
     fun create(request: AddAdminUserRequest): Admin
+    fun update(admin: Admin, request: UpdateAdminUserRequest): Admin
     fun search(request: AdminSearchRequest): Page<Admin>
 }
 
@@ -62,6 +64,16 @@ internal class DefaultAdminUserService(
         )
 
         return adminUserRepository.save(admin)
+    }
+
+    @Transactional
+    override fun update(admin: Admin, request: UpdateAdminUserRequest): Admin {
+        return admin.apply {
+            name = request.name
+            email = request.name
+
+            adminUserRepository.save(this)
+        }
     }
 
     @Transactional(readOnly = true)

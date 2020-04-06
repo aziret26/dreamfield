@@ -1,5 +1,6 @@
 package kg.task.dreamfield.config.security.principal
 
+import kg.task.dreamfield.domain.user.RoleCode
 import org.springframework.security.core.userdetails.User
 import java.io.Serializable
 
@@ -21,8 +22,7 @@ data class AdminPrincipal(
         @get:JvmName("getPassword_")
         val password: String,
 
-        val permissions: Set<PermissionPrincipal>
-
+        val permissions: Set<PermissionPrincipal> = setOf(PermissionPrincipal("ROLE_${RoleCode.ADMIN}", "ROLE_${RoleCode.ADMIN}"))
 
 ) : AccountPrincipal(email, password, permissions)
 
@@ -36,4 +36,4 @@ data class PlayerPrincipal(
         val password: String,
 
         val score: Long
-) : AccountPrincipal(email, password, setOf())
+) : AccountPrincipal(email, password, setOf(PermissionPrincipal("ROLE_${RoleCode.PLAYER}", "ROLE_${RoleCode.PLAYER}")))

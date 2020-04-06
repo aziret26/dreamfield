@@ -8,9 +8,11 @@ import kg.task.dreamfield.domain.user.paging.PlayerFilterRequest
 import kg.task.dreamfield.domain.user.paging.PlayerPageRequest
 import kg.task.dreamfield.domain.user.paging.PlayerSearchRequest
 import kg.task.dreamfield.domain.user.request.AddPlayerUserRequest
+import kg.task.dreamfield.domain.user.request.UpdatePlayerUserRequest
 import kg.task.dreamfield.dto.http.user.PlayerDto
 import kg.task.dreamfield.dto.http.user.add.AddPlayerUserRequestDto
 import kg.task.dreamfield.dto.http.user.paging.PlayerSearchRequestDto
+import kg.task.dreamfield.dto.http.user.update.UpdatePlayerUserRequestDto
 import kg.task.dreamfield.service.user.RoleService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 interface PlayerUserMapper {
     fun toPlayerDto(player: Player): PlayerDto
     fun toAddPlayerUserRequest(requestDto: AddPlayerUserRequestDto): AddPlayerUserRequest
+    fun toUpdatePlayerUserRequest(requestDto: UpdatePlayerUserRequestDto): UpdatePlayerUserRequest
     fun toPlayerSearchRequest(requestDto: PlayerSearchRequestDto): PlayerSearchRequest
 }
 
@@ -43,6 +46,13 @@ internal class DefaultPlayerUserMapper(
                 email = requestDto.email,
                 password = requestDto.password,
                 role = roleService.getByCode(RoleCode.PLAYER)
+        )
+    }
+
+    override fun toUpdatePlayerUserRequest(requestDto: UpdatePlayerUserRequestDto): UpdatePlayerUserRequest {
+        return UpdatePlayerUserRequest(
+                name = requestDto.name,
+                email = requestDto.email
         )
     }
 

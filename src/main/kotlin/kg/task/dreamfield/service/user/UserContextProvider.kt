@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 interface UserContextProvider {
     fun getCurrentAccount(): AccountPrincipal
     fun getCurrentUser(): AdminPrincipal
-    fun getCurrentClient(): PlayerPrincipal
+    fun getCurrentPlayer(): PlayerPrincipal
 }
 
 @Service
@@ -25,7 +25,7 @@ internal class DefaultUserContextProvider : UserContextProvider {
                 ?: throw UnauthorizedException("Failed to retrieve admin principal")
     }
 
-    override fun getCurrentClient(): PlayerPrincipal {
+    override fun getCurrentPlayer(): PlayerPrincipal {
         return getCurrentAccount() as? PlayerPrincipal
                 ?: throw UnauthorizedException("Failed to retrieve player principal")
     }

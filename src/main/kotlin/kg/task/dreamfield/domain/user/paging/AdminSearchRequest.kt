@@ -6,7 +6,7 @@ import kg.task.dreamfield.domain.paging.PageInfo
 import kg.task.dreamfield.domain.paging.PageRequestBase
 import kg.task.dreamfield.domain.paging.SortInfo
 import kg.task.dreamfield.domain.paging.SortProvider
-import kg.task.dreamfield.domain.user.QPlayer.player
+import kg.task.dreamfield.domain.user.QAdmin.admin
 import org.springframework.data.domain.Sort
 import org.springframework.data.querydsl.QSort
 
@@ -22,13 +22,13 @@ data class AdminPageRequest(
 
 enum class AdminSort : SortProvider {
     ID {
-        override fun getSorting(direction: Sort.Direction): Sort = QSort(OrderSpecifier(direction.order, player.id))
+        override fun getSorting(direction: Sort.Direction): Sort = QSort(OrderSpecifier(direction.order, admin.id))
     },
     NAME {
-        override fun getSorting(direction: Sort.Direction): Sort = QSort(OrderSpecifier(direction.order, player.name))
+        override fun getSorting(direction: Sort.Direction): Sort = QSort(OrderSpecifier(direction.order, admin.name))
     },
     EMAIL {
-        override fun getSorting(direction: Sort.Direction): Sort = QSort(OrderSpecifier(direction.order, player.email))
+        override fun getSorting(direction: Sort.Direction): Sort = QSort(OrderSpecifier(direction.order, admin.email))
     }
 }
 

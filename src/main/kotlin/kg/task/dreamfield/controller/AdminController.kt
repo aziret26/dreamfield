@@ -4,11 +4,9 @@ import kg.task.dreamfield.dto.http.paging.PageResponseDto
 import kg.task.dreamfield.dto.http.user.add.AddAdminUserRequestDto
 import kg.task.dreamfield.dto.http.user.AdminDto
 import kg.task.dreamfield.dto.http.user.paging.AdminSearchRequestDto
+import kg.task.dreamfield.dto.http.user.update.UpdateAdminUserRequestDto
 import kg.task.dreamfield.endpoint.user.AdminUserEndpoint
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
@@ -27,4 +25,9 @@ class AdminController(
         return adminUserEndpoint.search(requestDto)
     }
 
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Long,
+               @Valid @RequestBody requestDto: UpdateAdminUserRequestDto): AdminDto {
+        return adminUserEndpoint.update(id, requestDto)
+    }
 }

@@ -22,7 +22,7 @@ CREATE TABLE user_admins
 
 CREATE TABLE user_players
 (
-    score INT8    NOT NULL DEFAULT 0,
+    score INT8   NOT NULL DEFAULT 0,
     id    BIGINT NOT NULL
         CONSTRAINT pk__users_player__id PRIMARY KEY REFERENCES users (id)
 );
@@ -36,14 +36,13 @@ CREATE TABLE words
     status      VARCHAR(50)         NOT NULL
 );
 
-CREATE TABLE user_current_words
+CREATE TABLE player_current_words
 (
-    id          BIGSERIAL PRIMARY KEY,
-    player_id   BIGINT  NOT NULL REFERENCES user_players (id),
-    word_id     BIGINT  NOT NULL REFERENCES words (id),
-    tries_count INT     NOT NULL DEFAULT 0,
-    is_last_try BOOLEAN NOT NULL DEFAULT FALSE,
-    UNIQUE (player_id, word_id)
+    id               BIGSERIAL PRIMARY KEY,
+    player_id        BIGINT NOT NULL REFERENCES user_players (id),
+    word_id          BIGINT NOT NULL REFERENCES words (id),
+    scores_available INT    NOT NULL DEFAULT 0,
+    UNIQUE (player_id)
 );
 
 CREATE TABLE player_word_statistics
@@ -51,7 +50,6 @@ CREATE TABLE player_word_statistics
     id               BIGSERIAL PRIMARY KEY,
     player_id        BIGINT NOT NULL REFERENCES user_players (id),
     word_id          BIGINT NOT NULL REFERENCES words (id),
-    best_tries_count INT    NOT NULL DEFAULT 0,
     attempts_failed  INT    NOT NULL DEFAULT 0,
     attempts_success INT    NOT NULL DEFAULT 0,
     scores_achieved  INT    NOT NULL DEFAULT 0,

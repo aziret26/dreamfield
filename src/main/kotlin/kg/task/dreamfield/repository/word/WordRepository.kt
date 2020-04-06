@@ -1,6 +1,7 @@
 package kg.task.dreamfield.repository.word
 
 import kg.task.dreamfield.domain.word.Word
+import kg.task.dreamfield.domain.word.WordStatus
 import kg.task.dreamfield.repository.BaseRepository
 
 interface WordRepository : BaseRepository<Word> {
@@ -8,5 +9,7 @@ interface WordRepository : BaseRepository<Word> {
     fun findByValueContaining(value: String): Word
 
     fun findByValue(value: String): Word
+
+    fun countAllByStatus(status: WordStatus): Long
 
 }

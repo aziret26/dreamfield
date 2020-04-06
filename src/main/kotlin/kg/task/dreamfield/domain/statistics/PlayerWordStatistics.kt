@@ -17,9 +17,6 @@ class PlayerWordStatistics(
         @JoinColumn(name = "word_id")
         val word: Word,
 
-        @Column(name = "best_tries_count")
-        var bestTriesCount: Int,
-
         @Column(name = "attempts_failed")
         var attemptsFailed: Int,
 

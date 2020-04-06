@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 
 interface WordService {
     fun findById(id: Long): Word?
+    fun countAll(): Long
+    fun countByStatus(status: WordStatus): Long
     fun getById(id: Long): Word
     fun create(request: AddWordRequest): Word
     fun search(request: WordSearchRequest): Page<Word>
@@ -31,6 +33,14 @@ internal class DefaultWordService(
     @Transactional(readOnly = true)
     override fun findById(id: Long): Word? {
         return wordRepository.findByIdOrNull(id)
+    }
+
+    override fun countAll(): Long {
+        return wordRepository.count()
+    }
+
+    override fun countByStatus(status: WordStatus): Long {
+        return wordRepository.countAllByStatus(status)
     }
 
     @Transactional(readOnly = true)
@@ -51,6 +61,7 @@ internal class DefaultWordService(
         return wordRepository.save(word)
     }
 
+    @Transactional(readOnly = true)
     override fun search(request: WordSearchRequest): Page<Word> {
         val predicate = BooleanBuilder()
         search(predicate, request.filter)

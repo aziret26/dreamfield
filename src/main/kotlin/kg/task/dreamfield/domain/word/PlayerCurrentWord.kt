@@ -5,7 +5,7 @@ import kg.task.dreamfield.domain.user.Player
 import javax.persistence.*
 
 @Entity
-@Table(name = "user_current_words")
+@Table(name = "player_current_words")
 class PlayerCurrentWord(
 
         @ManyToOne
@@ -16,10 +16,7 @@ class PlayerCurrentWord(
         @JoinColumn(name = "word_id")
         val word: Word,
 
-        @Column(name = "tries_count")
-        var triesCount: Int,
-
-        @Column(name = "is_last_try")
-        var isLastTry: Boolean
+        @Column(name = "scores_available")
+        var scoreAvailable: Int
 
 ) : BaseEntity()

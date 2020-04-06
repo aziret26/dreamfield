@@ -3,14 +3,18 @@ package kg.task.dreamfield.service.word
 import kg.task.dreamfield.domain.user.Player
 import kg.task.dreamfield.domain.word.PlayerCurrentWord
 import kg.task.dreamfield.domain.word.Word
+import kg.task.dreamfield.exception.NotFoundException
 import kg.task.dreamfield.repository.word.PlayerCurrentWordRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface PlayerCurrentWordService {
-    fun findByPlayerAndWord(player: Player, word: Word): PlayerCurrentWord
+    fun existByPlayer(player: Player): Boolean
+    fun findByPlayer(player: Player): PlayerCurrentWord?
+    fun getByPlayer(player: Player): PlayerCurrentWord
     fun create(player: Player, word: Word): PlayerCurrentWord
-    fun update(playerCurrentWord: PlayerCurrentWord, triesCountValue: Int, isLastTryValue: Boolean): PlayerCurrentWord
+    fun updateAvailableScore(playerCurrentWord: PlayerCurrentWord, scoreAvailableNew: Int): PlayerCurrentWord
+    fun removeByPlayer(player: Player)
 }
 
 @Service
@@ -19,8 +23,19 @@ internal class DefaultPlayerCurrentWordService(
 ) : PlayerCurrentWordService {
 
     @Transactional(readOnly = true)
-    override fun findByPlayerAndWord(player: Player, word: Word): PlayerCurrentWord {
-        return playerCurrentWordRepository.findByPlayerAndWord(player, word)
+    override fun existByPlayer(player: Player): Boolean {
+        return playerCurrentWordRepository.existsByPlayer(player)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findByPlayer(player: Player): PlayerCurrentWord? {
+        return playerCurrentWordRepository.findByPlayer(player)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getByPlayer(player: Player): PlayerCurrentWord {
+        return findByPlayer(player)
+                ?: throw NotFoundException("Current Player has no words to guess")
     }
 
     @Transactional
@@ -28,23 +43,25 @@ internal class DefaultPlayerCurrentWordService(
         val playerCurrentWord = PlayerCurrentWord(
                 player = player,
                 word = word,
-                triesCount = 0,
-                isLastTry = false
+                scoreAvailable = word.maxScores
         )
 
         return playerCurrentWordRepository.save(playerCurrentWord)
     }
 
     @Transactional
-    override fun update(playerCurrentWord: PlayerCurrentWord,
-                        triesCountValue: Int,
-                        isLastTryValue: Boolean): PlayerCurrentWord {
+    override fun updateAvailableScore(playerCurrentWord: PlayerCurrentWord,
+                                      scoreAvailableNew: Int): PlayerCurrentWord {
         return playerCurrentWord.apply {
-            triesCount = triesCountValue
-            isLastTry = isLastTryValue
+            scoreAvailable = scoreAvailableNew
 
             playerCurrentWordRepository.save(this)
         }
+    }
+
+    @Transactional
+    override fun removeByPlayer(player: Player) {
+        playerCurrentWordRepository.deleteByPlayer(player)
     }
 
 }

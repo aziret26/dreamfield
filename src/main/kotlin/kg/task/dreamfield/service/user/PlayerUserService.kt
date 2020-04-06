@@ -6,6 +6,7 @@ import kg.task.dreamfield.domain.user.QPlayer.player
 import kg.task.dreamfield.domain.user.paging.PlayerFilterRequest
 import kg.task.dreamfield.domain.user.paging.PlayerSearchRequest
 import kg.task.dreamfield.domain.user.request.AddPlayerUserRequest
+import kg.task.dreamfield.domain.user.request.UpdatePlayerUserRequest
 import kg.task.dreamfield.exception.NotFoundException
 import kg.task.dreamfield.repository.findAll
 import kg.task.dreamfield.repository.user.PlayerUserRepository
@@ -21,6 +22,8 @@ interface PlayerUserService {
     fun findByEmail(email: String): Player?
     fun getByEmail(email: String): Player
     fun create(request: AddPlayerUserRequest): Player
+    fun update(player: Player, request: UpdatePlayerUserRequest): Player
+    fun addScore(player: Player, scoreToAdd: Int): Player
     fun search(request: PlayerSearchRequest): Page<Player>
 }
 
@@ -62,6 +65,24 @@ internal class DefaultPlayerUserService(
         )
 
         return playerUserRepository.save(player)
+    }
+
+    @Transactional
+    override fun update(player: Player, request: UpdatePlayerUserRequest): Player {
+        return player.apply {
+            name = request.name
+            email = request.email
+
+            playerUserRepository.save(this)
+        }
+    }
+
+    override fun addScore(player: Player, scoreToAdd: Int): Player {
+        return player.apply {
+            score += scoreToAdd
+
+            playerUserRepository.save(this)
+        }
     }
 
     @Transactional(readOnly = true)

@@ -8,5 +8,5 @@ import kg.task.dreamfield.repository.BaseRepository
 interface PlayerWordStatisticsRepository : BaseRepository<PlayerWordStatistics> {
     fun findByPlayer(user: Player): Collection<PlayerWordStatistics>
     fun findByWord(word: Word): Collection<PlayerWordStatistics>
-    fun findByPlayerAndWord(user: Player, word: Word): Collection<PlayerWordStatistics>
+    fun findByPlayerAndWord(user: Player, word: Word): PlayerWordStatistics?
 }

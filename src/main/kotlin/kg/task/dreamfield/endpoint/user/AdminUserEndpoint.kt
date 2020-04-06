@@ -3,19 +3,23 @@ package kg.task.dreamfield.endpoint.user
 import kg.task.dreamfield.domain.user.Admin
 import kg.task.dreamfield.domain.user.paging.AdminSearchRequest
 import kg.task.dreamfield.domain.user.request.AddAdminUserRequest
+import kg.task.dreamfield.domain.user.request.UpdateAdminUserRequest
 import kg.task.dreamfield.dto.http.paging.PageResponseDto
 import kg.task.dreamfield.dto.http.user.add.AddAdminUserRequestDto
 import kg.task.dreamfield.dto.http.user.AdminDto
 import kg.task.dreamfield.dto.http.user.paging.AdminSearchRequestDto
+import kg.task.dreamfield.dto.http.user.update.UpdateAdminUserRequestDto
 import kg.task.dreamfield.mapper.paging.PageMapper
 import kg.task.dreamfield.mapper.user.AdminUserMapper
 import kg.task.dreamfield.service.user.AdminUserService
+import org.hibernate.sql.Update
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface AdminUserEndpoint {
     fun create(requestDto: AddAdminUserRequestDto): AdminDto
+    fun update(id: Long, requestDto: UpdateAdminUserRequestDto): AdminDto
     fun search(requestDto: AdminSearchRequestDto): PageResponseDto<AdminDto>
 }
 
@@ -33,6 +37,16 @@ internal class DefaultAdminUserEndpoint(
         val adminUser: Admin = adminUserService.create(request)
 
         return adminUserMapper.toAdminDto(adminUser)
+    }
+
+    @Transactional
+    override fun update(id: Long, requestDto: UpdateAdminUserRequestDto): AdminDto {
+        val admin: Admin = adminUserService.getById(id)
+        val request: UpdateAdminUserRequest = adminUserMapper.toUpdateAdminUserRequest(requestDto)
+
+        adminUserService.update(admin, request)
+
+        return adminUserMapper.toAdminDto(admin)
     }
 
     @Transactional(readOnly = true)
