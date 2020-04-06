@@ -1,5 +1,3 @@
-AccountApiRequestHelper.requestCurrentAccount()
-
 class Displayable {
   display() {
 
@@ -80,6 +78,9 @@ class Header extends Displayable {
   constructor(id = "#header") {
     super()
     $(id).html(this.headerDefaultContent)
+    $("body").on("click", "#sign-out", () => {
+      AuthApiHelper.signOut(Navigate.sigIn())
+    })
   }
 
   headerDefaultContent = () => {
@@ -93,7 +94,7 @@ class Header extends Displayable {
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto" id="nav-menu"></ul>
     <div class="form-inline my-2 my-lg-0">
-      <button class="btn btn-outline-success my-2 my-sm-0">Выйти</button>
+      <button class="btn btn-outline-success my-2 my-sm-0" id="sign-out">Выйти</button>
     </div>
   </div>
 </nav>

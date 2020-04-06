@@ -32,6 +32,11 @@ function validateFields(params) {
 
 $("body").on("click", "#sign-in-btn", () => {
 
+  signIn()
+
+})
+
+function signIn() {
   let params = {
     username: $("#username").val(),
     password: $("#password").val()
@@ -43,6 +48,14 @@ $("body").on("click", "#sign-in-btn", () => {
 
   onAuthStart()
   authorize(params, onAuthSuccess, onAuthError)
+}
+
+$("body").on("keypress", ".sign-in-form", () => {
+
+  if (e.which == 13) {
+    signIn()
+  }
+
 })
 
 navigateUserPage();

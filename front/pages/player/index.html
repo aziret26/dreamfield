@@ -1,25 +1,37 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dream Field</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Dream Field</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <header id="header"></header>
 
-<h1>Player page</h1>
-
 <div class="container">
-    <div id="player-statistics"></div>
-    <div id="guess-word">
-
+  <div id="player-statistics"></div>
+  <div id="guess-word" class="d-flex justify-content-center">
+    <div class="form-group d-flex align-items-center flex-column">
+      <label for="guess-word-value" class="">Введите слово</label>
+      <div class="d-flex ">
+        <input type="email" class="form-control width-fit-content mr-2" id="guess-word-value"
+               aria-describedby="guess-word-help">
+        <button class="btn btn-primary" type="submit">Submit form</button>
+      </div>
+      <small id="guess-word-help-1" class="form-text text-muted">Введите букву или слово. Каждая неверная буква будет
+        уменьшать возможное количество баллов.</small>
+      <small id="guess-word-help-2" class="form-text text-muted">Допустимые символы: русский алфавит от 'а' до
+        'я'.</small>
     </div>
-    <div id="guess-word-result"></div>
+  </div>
+  <div id="guess-word-result">
+    <div id="guess-word-table"></div>
+    <div id="guess-word-failed"></div>
+  </div>
 
 </div>
 
@@ -30,5 +42,8 @@
 <script src="/script/api.js"></script>
 <script src="/script/tools.js"></script>
 <script src="index.js"></script>
+<script>
+  header.setActive("admin-main")
+</script>
 </body>
 </html>

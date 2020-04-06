@@ -9,11 +9,7 @@ class Server {
 
 class ApiRequestHelper {
   static get = (url,
-                onSuccess = (r) => {
-                },
-                onError = (e) => {
-                },
-                async = true) => {
+                {onSuccess, onError, async = true}) => {
     $.ajax({
       async: async,
       url: url,
@@ -22,20 +18,22 @@ class ApiRequestHelper {
         withCredentials: true
       },
       success: function (result) {
-        onSuccess(result)
+        if (onSuccess) {
+          onSuccess(result)
+        }
       },
       error: function (e) {
-        onError(e)
+        if (onError) {
+          onError(e)
+        }
       }
     })
   }
 
   static post = (url,
                  params,
-                 onSuccess = () => {
-                 },
-                 onError = () => {
-                 }) => {
+                 onSuccess,
+                 onError) => {
     validateType(params, PostRequestParams)
     $.ajax({
       async: params.async,
@@ -48,10 +46,14 @@ class ApiRequestHelper {
         withCredentials: true
       },
       success: function (result) {
-        onSuccess(result)
+        if (onSuccess) {
+          onSuccess(result)
+        }
       },
       error: function (e) {
-        onError(e)
+        if (onError) {
+          onError(e)
+        }
       }
     })
   }
@@ -102,10 +104,10 @@ class AccountApiRequestHelper {
   static requestCurrentAccount = () => {
     ApiRequestHelper.get(
       AccountApiRequestHelper.#currentAccountUrl,
-      AccountApiRequestHelper.setCurrentUser,
-      () => {
-      },
-      false
+      {
+        onSuccess: AccountApiRequestHelper.setCurrentUser,
+        async: false
+      }
     )
   }
 
@@ -117,19 +119,16 @@ class AccountApiRequestHelper {
 class AuthApiHelper {
 
   static #sigInUrl = Server.generateUrl("api/v1/login")
+  static #sigOutUrl = Server.generateUrl("api/v1/logout")
   static auth = (params, onSuccess, onError) => {
     let data = new FormData()
-
     data.append("username", params.username)
     data.append("password", params.password)
 
-    this.#sign(params, onSuccess, onError)
+    this.#signIn(data, onSuccess, onError)
   }
 
-  static #sign = (params, onSuccess, onError) => {
-    let data = new FormData()
-    data.append("username", params.username)
-    data.append("password", params.password)
+  static #signIn = (data, onSuccess, onError) => {
 
     $.ajax({
       url: this.#sigInUrl,
@@ -148,6 +147,10 @@ class AuthApiHelper {
         onError()
       }
     })
+  }
+
+  static signOut = () => {
+    ApiRequestHelper.get(this.#sigOutUrl, {async: true})
   }
 }
 
