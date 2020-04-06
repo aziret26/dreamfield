@@ -373,16 +373,22 @@ class RequestForList extends Displayable {
     this.searcher = searcher
     this.contentDisplayer = displayContent
 
-    this.paging = new PaginationPages({onClick: this.search, divId: `${this.id}-paging`, pagingCode: this.id})
-
-    this.searchBtnId = `${this.id}-search-btn`
-    // $(`#${this.searchBtnId}`).off("click")
-    $(`#${this.searchBtnId}`).prop('onclick',null).off('click');
-    $("body").on("click", `#${this.searchBtnId}`, () => {
-      this.search()
+    this.paging = new PaginationPages({
+      onClick: this.search,
+      divId: `${this.id}-paging`,
+      pagingCode: this.id,
+      maxDisplayPages: 5
     })
 
+    this.searchBtnId = `${this.id}-search-btn`
+
     this.search()
+  }
+
+  addClickListener = () => {
+    let btn = document.getElementById(this.searchBtnId)
+    btn.removeEventListener("click", this.search, false)
+    btn.addEventListener("click", this.search, false)
   }
 
   display = () => {
@@ -402,6 +408,7 @@ class RequestForList extends Displayable {
 </div> 
     `
     $(`#${this.id}`).html(result)
+    this.addClickListener()
   }
 
   search = () => {
@@ -414,13 +421,12 @@ class RequestForList extends Displayable {
     result["filter"] = this.filter.getRequestObject()
     result["pageRequest"] = {
       page: this.paging.currentPage,
-      limit: 1
+      limit: 15
     }
     return result
   }
 
   displaySearchBtn = () => {
-
     return `<button class="btn btn-outline-primary height-fit-content search-btn" id="${this.searchBtnId}">Поиск</button>`
   }
 
