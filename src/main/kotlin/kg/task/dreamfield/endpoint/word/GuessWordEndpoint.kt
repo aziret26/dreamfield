@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 
 interface GuessWordEndpoint {
     fun getNextGuessWord(playerPrincipal: PlayerPrincipal): GuessWordDto
-    fun guessWord(playerPrincipal: PlayerPrincipal, requestDto: GuessWordRequestDto): GuessResult
+    fun guessWord(playerPrincipal: PlayerPrincipal, requestDto: GuessWordRequestDto): GuessWordDto
 }
 
 @Service
@@ -39,12 +39,14 @@ internal class DefaultGuessWordEndpoint(
     }
 
     @Transactional
-    override fun guessWord(playerPrincipal: PlayerPrincipal, requestDto: GuessWordRequestDto): GuessResult {
+    override fun guessWord(playerPrincipal: PlayerPrincipal, requestDto: GuessWordRequestDto): GuessWordDto {
         val player: Player = playerUserService.getById(playerPrincipal.id)
         val playerCurrentWord: PlayerCurrentWord = playerCurrentWordService.getByPlayer(player)
         val guessResultResult: GuessResult = playerCurrentWordGuessService.guessWord(playerCurrentWord, requestDto)
 
-        return playerCurrentWordGuessService.processGuessResult(playerCurrentWord, guessResultResult)
+        val guessResult: GuessResult = playerCurrentWordGuessService.processGuessResult(playerCurrentWord, guessResultResult)
+
+        return playerCurrentWordMapper.toGuessWordDto(playerCurrentWord, guessResult)
 
     }
 

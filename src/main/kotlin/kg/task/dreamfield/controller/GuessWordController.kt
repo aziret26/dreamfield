@@ -22,8 +22,8 @@ class GuessWordController(
         return guessWordEndpoint.getNextGuessWord(userContextProvider.getCurrentPlayer())
     }
 
-    @PostMapping("/guess-single-letter")
-    fun guessSingleLetter(@Valid @RequestBody requestDto: GuessWordRequestDto): GuessResult {
+    @PostMapping("/guess-word")
+    fun guessWord(@Valid @RequestBody requestDto: GuessWordRequestDto): GuessWordDto {
         return guessWordEndpoint.guessWord(userContextProvider.getCurrentPlayer(), requestDto)
     }
 

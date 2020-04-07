@@ -20,12 +20,13 @@ header {
 .width-fit-content {
     width: fit-content;
 }
+
 .height-fit-content {
     height: fit-content;
 }
 
-.flex {
-    display: flex;
+.hidden {
+    display: none !important;
 }
 
 @media screen and (max-width: 1200px) {

@@ -31,9 +31,11 @@ class ApiRequestHelper {
   }
 
   static post = (url,
-                 params,
-                 onSuccess,
-                 onError) => {
+                 {
+                   params,
+                   onSuccess,
+                   onError
+                 }) => {
     validateType(params, PostRequestParams)
     $.ajax({
       async: params.async,
@@ -68,13 +70,13 @@ class AdminApiRequestHelper {
   static requestCreate = (params, onSuccess, onError) => {
     let prp = new PostRequestParams({body: params})
 
-    ApiRequestHelper.post(this.#createUrl, prp, onSuccess, onError)
+    ApiRequestHelper.post(this.#createUrl, {params: prp, onSuccess: onSuccess, onError: onError})
   }
 
   static search = (params, onSuccess, onError) => {
     let prp = new PostRequestParams({body: params})
 
-    ApiRequestHelper.post(this.#searchUrl, prp, onSuccess, onError)
+    ApiRequestHelper.post(this.#searchUrl, {params: prp, onSuccess: onSuccess, onError: onError})
   }
 }
 
@@ -87,13 +89,13 @@ class PlayerApiRequestHelper {
   static requestCreate = (params, onSuccess, onError) => {
     let prp = new PostRequestParams({body: params})
 
-    ApiRequestHelper.post(this.#createUrl, prp, onSuccess, onError)
+    ApiRequestHelper.post(this.#createUrl, {params: prp, onSuccess: onSuccess, onError: onError})
   }
 
   static search = (params, onSuccess, onError) => {
     let prp = new PostRequestParams({body: params})
 
-    ApiRequestHelper.post(this.#searchUrl, prp, onSuccess, onError)
+    ApiRequestHelper.post(this.#searchUrl, {params: prp, onSuccess: onSuccess, onError: onError})
   }
 
 }
@@ -154,18 +156,37 @@ class AuthApiHelper {
   }
 }
 
+class GuessWordApiRequestHelper {
+  static #url = `${Server.url}/api/v1/words/guess`
+  static #nextGuessWordUrl = `${this.#url}/next-guess-word`
+  static #guessWordUrl = `${this.#url}/guess-word`
+
+  static requestNextGuessWordUrl = (onSuccess, onError) => {
+    ApiRequestHelper.get(this.#nextGuessWordUrl, {
+      onSuccess: onSuccess,
+      onError: onError,
+      async: true
+    })
+  }
+
+  static requestGuessWord = ({params, onSuccess, onError}) => {
+    let prp = new PostRequestParams({body: params})
+    ApiRequestHelper.post(this.#guessWordUrl, {params: prp, onSuccess: onSuccess, onError: onError})
+  }
+}
+
 class PostRequestParams {
   body
   contentType
 
-  constructor(data) {
-    if (!data.body) {
+  constructor({body, contentType, async}) {
+    if (!body) {
       throw new Error("body is empty")
     }
 
-    this.body = data.body
-    this.contentType = data.contentType || "application/json"
-    this.async = data.async || true
+    this.body = body
+    this.contentType = contentType || "application/json"
+    this.async = async || true
   }
 
 }

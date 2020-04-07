@@ -8,5 +8,5 @@ data class GuessWordRequestDto(
         val word: String,
 
         @Valid
-        val fundLetter: List<PreviousFondLetterRequestDto>
+        val foundLetters: List<PreviousFondLetterRequestDto>
 )

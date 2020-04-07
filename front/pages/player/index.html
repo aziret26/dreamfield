@@ -8,31 +8,52 @@
   <title>Dream Field</title>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
 <header id="header"></header>
 
 <div class="container">
   <div id="player-statistics"></div>
-  <div id="guess-word" class="d-flex justify-content-center">
+  <div id="guess-word" class="d-flex justify-content-center mb-3 flex-column">
     <div class="form-group d-flex align-items-center flex-column">
-      <label for="guess-word-value" class="">Введите слово</label>
+      <h1 for="guess-word-input" class="">Введите слово</h1>
       <div class="d-flex ">
-        <input type="email" class="form-control width-fit-content mr-2" id="guess-word-value"
-               aria-describedby="guess-word-help">
-        <button class="btn btn-primary" type="submit">Submit form</button>
+        <input type="text" class="form-control width-fit-content mr-2" id="guess-word-input"
+               aria-describedby="guess-word-help" autofocus>
+        <button class="btn btn-primary" id="guess-word-btn">Отправить</button>
       </div>
-      <small id="guess-word-help-1" class="form-text text-muted">Введите букву или слово. Каждая неверная буква будет
-        уменьшать возможное количество баллов.</small>
+      <small id="guess-word-help-1" class="form-text text-muted">Введите букву или слово. Каждая неверная буква
+        будет уменьшать возможное количество баллов.</small>
       <small id="guess-word-help-2" class="form-text text-muted">Допустимые символы: русский алфавит от 'а' до
         'я'.</small>
     </div>
-  </div>
-  <div id="guess-word-result">
-    <div id="guess-word-table"></div>
-    <div id="guess-word-failed"></div>
+
+    <div id="guess-word-result-failed" class="d-flex flex-column align-items-center mb-4 text-danger"></div>
+
+    <div id="guess-word-result" class="d-flex flex-column align-items-center">
+      <p id="guess-word-response-help" class="form-text"></p>
+      <div id="guess-word-result-table">
+        <table class="table-bordered guess-word-table">
+          <tr id="guess-word-show-row">
+          </tr>
+        </table>
+      </div>
+      <div id="guess-word-info" class="d-flex flex-column align-content-center">
+
+        <div id="guess-word-description" class="text-center"></div>
+        <div id="guess-word-score">Баллы (осталось/максимум): <span id="guess-word-score-value"></span>></div>
+      </div>
+    </div>
   </div>
 
+  <div id="guess-word-request-section" class="d-flex justify-content-center flex-column">
+    <h2 id="request-message" class="text-center"></h2>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <button id="request-next-word-btn" class="btn btn-lg btn-outline-primary">НАЧАТЬ ЗАНОВО</button>
+  </div>
 </div>
 
 <script src="/script/libs/jquery-3.4.1.min.js"></script>

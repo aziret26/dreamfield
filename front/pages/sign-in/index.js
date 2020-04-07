@@ -50,7 +50,7 @@ function signIn() {
   authorize(params, onAuthSuccess, onAuthError)
 }
 
-$("body").on("keypress", ".sign-in-form", () => {
+$("body").on("keypress", ".sign-in-form", (e) => {
 
   if (e.which == 13) {
     signIn()

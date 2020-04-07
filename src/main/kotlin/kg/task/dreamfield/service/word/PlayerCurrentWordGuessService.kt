@@ -31,7 +31,7 @@ internal class DefaultPlayerCurrentWordGuessService(
         } else {
             val guess: MutableSet<Char> = mutableSetOf()
             guess.addAll(requestDto.word.toSet())
-            guess.addAll(requestDto.fundLetter.map { it.letter }.toSet())
+            guess.addAll(requestDto.foundLetters.map { it.letter }.toSet())
 
             val foundLetters = mutableListOf<PositionLetterPair>()
             val lettersNotContained = mutableListOf<Char>()
@@ -65,7 +65,7 @@ internal class DefaultPlayerCurrentWordGuessService(
                                     guessResult: GuessResult): GuessResult {
         return when (guessResult) {
             is GuessResultFailed -> guessResult
-            is GuessResultFinished -> guessResult
+            is GuessResultSuceeded -> guessResult
 
             is GuessResultInProgress -> {
                 val score = playerCurrentWord.scoreAvailable - guessResult.lettersNotContained.size
@@ -74,7 +74,7 @@ internal class DefaultPlayerCurrentWordGuessService(
                 }
 
                 if (playerCurrentWord.word.value.length == guessResult.lettersContained.size) {
-                    GuessResultFinished(
+                    GuessResultSuceeded(
                             lettersContained = guessResult.lettersContained,
                             lettersNotContained = guessResult.lettersNotContained
                     )
@@ -104,7 +104,7 @@ internal class DefaultPlayerCurrentWordGuessService(
 
                 return guessResult
             }
-            is GuessResultFinished -> {
+            is GuessResultSuceeded -> {
                 val score = playerCurrentWord.scoreAvailable - guessResult.lettersNotContained.size
 
                 playerCurrentWordService.removeByPlayer(playerCurrentWord.player)
@@ -115,16 +115,15 @@ internal class DefaultPlayerCurrentWordGuessService(
         }
     }
 
-}
+    private fun getContainingLetters(word: String): MutableList<PositionLetterPair> {
+        val result = mutableListOf<PositionLetterPair>()
 
-private fun getContainingLetters(word: String): MutableList<PositionLetterPair> {
-    val result = mutableListOf<PositionLetterPair>()
+        word.forEachIndexed { i, letter ->
+            result.add(PositionLetterPair(position = i, letter = letter))
+        }
 
-    word.forEachIndexed { i, letter ->
-        result.add(PositionLetterPair(position = i, letter = letter))
+        return result
+
     }
 
-    return result
-
 }
-
