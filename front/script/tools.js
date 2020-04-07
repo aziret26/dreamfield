@@ -421,14 +421,14 @@ class RequestForList extends Displayable {
 
   displayFilter() {
     if (!this.filter) {
-      return
+      return ""
     }
     return this.filter.display()
   }
 
   displaySoring() {
     if (!this.sorting) {
-      return
+      return ""
     }
     return this.sorting.display()
   }

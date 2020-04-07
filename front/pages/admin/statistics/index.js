@@ -1,1 +1,0 @@
-header.setActive("admin-statistics")
