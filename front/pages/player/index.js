@@ -20,6 +20,12 @@ function setCurrentGuessWord(result) {
   }
 }
 
+let currentStatistics = {}
+function setCurrentStatistics(result = {}) {
+  currentStatistics = new CurrentPlayerStatistics(result)
+  updateCurrentPLayerStatistics()
+}
+
 function getGuessWordAsPlainText(guessWord) {
   let letters = currentGuessWord
     .guessResult
@@ -45,19 +51,20 @@ function hideWordGuessAndShowRequestNext() {
 }
 
 function playerGuessedSuccess(guessWord) {
-  console.log("succ")
   hideWordGuessAndShowRequestNext()
   let resultText = `
 Поздравляем у вас получилось отгадать слово.</br>
 Вы заработали ${guessWord.availableScore} баллов отгадав слово "${getGuessWordAsPlainText(guessWord)}"`
   $("#request-message").html(resultText)
   playerGuessedProgress(guessWord)
+  requestCurrentPlayerStatistics()
 }
 
 function playerGuessedFailed() {
   console.log("fail")
   hideWordGuessAndShowRequestNext()
   $("#request-message").html("У вас не получилось отгадать слово за выданное колличество попыток.")
+  requestCurrentPlayerStatistics()
 }
 
 function displayScore(guessWord) {
@@ -142,6 +149,18 @@ function onRequestError(e) {
   $("#guess-word-result-failed").html(getErrors(e.responseJSON))
 }
 
+function updateCurrentPLayerStatistics() {
+  $("#stat-player-score").html(currentStatistics.scoresAchieved)
+  $("#stat-player-attempts-failed").html(currentStatistics.attemptsFailed)
+  $("#stat-player-attempts-success").html(currentStatistics.attemptsSuccess)
+  $("#stat-player-attempts-total").html(currentStatistics.attemptsTotal)
+  $("#stat-player-unique-words").html(currentStatistics.uniqueWords)
+}
+
+function requestCurrentPlayerStatistics() {
+  StatisticsApiRequestHelper.requestCurrentPlayerStatistics(setCurrentStatistics)
+}
+
 function requestNewNextGuessWord() {
   $("#guess-word-result-failed").html("")
   GuessWordApiRequestHelper.requestNextGuessWordUrl(onRequestSuccess, onRequestError)
@@ -167,7 +186,6 @@ function guessWord() {
   })
 }
 
-
 $("body").on("keypress", "#guess-word-input", (e) => {
   if (e.which == 13) {
     guessWord()
@@ -182,6 +200,7 @@ $("body").on("click", "#request-next-word-btn", () => {
   requestNewNextGuessWord()
 })
 
-showWordGuessAndHideRequestNext()
 
+showWordGuessAndHideRequestNext()
 requestNewNextGuessWord()
+requestCurrentPlayerStatistics()

@@ -6,11 +6,13 @@ import kg.task.dreamfield.dto.http.user.PlayerDto
 import kg.task.dreamfield.dto.http.user.paging.PlayerSearchRequestDto
 import kg.task.dreamfield.dto.http.user.update.UpdatePlayerUserRequestDto
 import kg.task.dreamfield.endpoint.user.PlayerUserEndpoint
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1/players")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 class PlayerController(
         private val playerUserEndpoint: PlayerUserEndpoint
 ) {

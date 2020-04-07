@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: postgres
-    password: postgres
+    username: user
+    password: user_pswd
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/dream_field
   redis:

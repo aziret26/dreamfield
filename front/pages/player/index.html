@@ -14,7 +14,35 @@
 <header id="header"></header>
 
 <div class="container">
-  <div id="player-statistics"></div>
+  <div id="player-statistics" class="d-flex justify-content-center">
+    <table class="mr-5">
+      <tr>
+        <td>Попытки: всего</td>
+        <td id="stat-player-attempts-total"></td>
+      </tr>
+      <tr>
+        <td>Попытки: успех</td>
+        <td id="stat-player-attempts-success"></td>
+      </tr>
+      <tr>
+        <td>Попытки: провал</td>
+        <td id="stat-player-attempts-failed"></td>
+      </tr>
+    </table>
+
+
+    <table>
+      <tr>
+        <td>Баллы</td>
+        <td id="stat-player-score"></td>
+      </tr>
+      <tr>
+        <td>Уникальные слова</td>
+        <td id="stat-player-unique-words"></td>
+      </tr>
+    </table>
+  </div>
+  <hr>
   <div id="guess-word" class="d-flex justify-content-center mb-3 flex-column">
     <div class="form-group d-flex align-items-center flex-column">
       <h1 for="guess-word-input" class="">Введите слово</h1>

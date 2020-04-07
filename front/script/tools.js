@@ -94,6 +94,7 @@ class Header extends Displayable {
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto" id="nav-menu"></ul>
     <div class="form-inline my-2 my-lg-0">
+      <span class="mr-4">Привет, ${AccountApiRequestHelper.currentAccount.name}</span>
       <button class="btn btn-outline-success my-2 my-sm-0" id="sign-out">Выйти</button>
     </div>
   </div>
@@ -255,26 +256,27 @@ class Sorting extends Displayable {
 
   display = () => {
     let result = `
-<div class="mr-2">
-  <label for="role">Сортировать</label>
+<!--<div class=" mb-3">-->
+
+<div class="d-flex mr-2 mb-2">
+  <label for="role" class="mr-2">Сортировать</label>
   <select class="custom-select width-fit-content" id="sort-by">
 `
     this.sortItems.forEach((item) => {
       result += item.display()
     })
-    result += "</select></div>"
+    result += "</select>"
     result += this.getSortDirectionAsHtml()
+    result += "</div>"
     return result
   }
 
   getSortDirectionAsHtml = () => {
     return `
-    <div class="">
         <select class="custom-select width-fit-content" id="sort-direction" required>
             <option value="ASC">по возрастанию</option>
             <option value="DESC">по убыванию</option>
         </select>
-    </div>
     `
   }
 
@@ -330,7 +332,8 @@ class Filter extends Displayable {
   }
 
   display() {
-    let result = `<div class="d-flex">`
+    let result = `<div class="d-flex">
+  <label for="role" class="mr-2">Фильтровать</label>`
     this.filters.forEach((item) => {
       result += item.display()
     })
@@ -361,12 +364,12 @@ class RequestForList extends Displayable {
     super()
     this.id = id
 
-    if (!(filter instanceof Filter)) {
+    if (filter && !(filter instanceof Filter)) {
       throw new DOMException("Not instance of Filter")
     }
     this.filter = filter
 
-    if (!(sorting instanceof Sorting)) {
+    if (sorting && !(sorting instanceof Sorting)) {
       throw new DOMException("Not instance of Sorting")
     }
     this.sorting = sorting
@@ -395,12 +398,12 @@ class RequestForList extends Displayable {
   display = () => {
     let result = `
 <div>
-  <div class="flex searcher justify-content-between mb-3 align-items-center">
-    <div class="d-flex align-items-center">
-        ${this.sorting.display()}
+  <div class="d-flex searcher justify-content-between mb-3 align-items-center">
+    <div class="d-flex flex-column">
+        ${this.displaySoring()}
+        ${this.displayFilter()}
     </div>
-    <div class="d-flex justify-content-around">
-        ${this.filter.display()}
+    <div>
         ${this.displaySearchBtn()}
     </div>
   </div>
@@ -413,26 +416,50 @@ class RequestForList extends Displayable {
   }
 
   search = () => {
-    this.searcher(this.getRequestObject(), this.onSearchSuccess)
+    this.searcher({params: this.getRequestObject(), onSuccess: this.onSearchSuccess})
+  }
+
+  displayFilter() {
+    if (!this.filter) {
+      return
+    }
+    return this.filter.display()
+  }
+
+  displaySoring() {
+    if (!this.sorting) {
+      return
+    }
+    return this.sorting.display()
   }
 
   getRequestObject = () => {
     let result = {}
-    result["sorting"] = this.sorting.getRequestObject()
-    result["filter"] = this.filter.getRequestObject()
+    result["sorting"] = this.getSortingRequestObject()
+    result["filters"] = this.getFilterRequestObject()
     result["pageRequest"] = {
-      page: this.paging.currentPage,
+      page: this.paging.currentPage || 1,
       limit: 15
     }
     return result
   }
 
-  displaySearchBtn = () => {
-    return `<button class="btn btn-outline-primary height-fit-content search-btn" id="${this.searchBtnId}">Поиск</button>`
+  getFilterRequestObject = () => {
+    if (!this.filter) {
+      return
+    }
+    return this.filter.getRequestObject()
+  }
+  getSortingRequestObject = () => {
+    if (!this.sorting) {
+      return
+    }
+    return this.sorting.getRequestObject()
   }
 
-  setId = (id) => {
-    this.id = id
+
+  displaySearchBtn = () => {
+    return `<button class="btn btn-outline-primary height-fit-content search-btn" id="${this.searchBtnId}">Поиск</button>`
   }
 
   onSearchSuccess = (result) => {

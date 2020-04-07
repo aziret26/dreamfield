@@ -36,7 +36,6 @@ function displayErrors(errors) {
   }
   errors.forEach((e) => {
     let id = `#${e.field}-error`
-    console.log(id, e.defaultMessage)
     $(id).html(e.defaultMessage)
   })
 }
@@ -68,8 +67,8 @@ function displayPlayers(players, id) {
 <td class="align-middle">${p.id}</td>
 <td><input type="text" class="form-control" value="${p.name}"></td>
 <td><input type="text" class="form-control" value="${p.email}"></td>
-<td><input type="text" class="form-control" value="${p.score}"></td>
-<td></td>
+<td class="align-middle">${p.score}</td>
+<td> <button class="btn btn-outline-success btn-sm edit-player" player-id="${p.id}">Сохранить</button> </td>
 </tr>
 `
   })
@@ -100,7 +99,8 @@ function displayAdmins(admins, id) {
 <td class="align-middle">${p.id}</td>
 <td><input type="text" class="form-control" value="${p.name}"></td>
 <td><input type="text" class="form-control" value="${p.email}"></td>
-<td></td>
+<td> <button class="btn btn-outline-success btn-sm edit-user" user-id="${p.id}">Сохранить</button> </td>
+
 </tr>
 `
   })
@@ -129,34 +129,53 @@ let playerFilter = new Filter()
 playerFilter.addItem(new FilterText({name: "Имя", code: "NAME"}))
 playerFilter.addItem(new FilterText({name: "Email", code: "EMAIL"}))
 
+function searchPlayers() {
+  $(".search-users-btn").removeClass("btn-info")
+  $("#search-players-btn").addClass("btn-info")
+  $("#search-players-btn").removeClass("btn-outline-info")
+
+  let newDivId = `search-players-content`
+  $("#searcher-content").html(`<div id="${newDivId}"/>`)
+
+  let searchRequest = new RequestForList({
+    sorting: playerSorting,
+    filter: playerFilter,
+    displayContent: displayPlayers,
+    searcher: PlayerApiRequestHelper.search,
+    id: newDivId
+  })
+
+  searchRequest.display()
+}
+
+function searchAdmins() {
+  $(".search-users-btn").removeClass("btn-info")
+  $("#search-admins-btn").addClass("btn-info")
+  $("#search-admins-btn").removeClass("btn-outline-info")
+
+  let newDivId = `search-admins-content`
+  $("#searcher-content").html(`<div id="${newDivId}"/>`)
+
+  let searchRequest = new RequestForList({
+    sorting: adminSorting,
+    filter: adminFilter,
+    displayContent: displayAdmins,
+    searcher: AdminApiRequestHelper.search,
+    id: newDivId
+  })
+
+  searchRequest.display()
+}
 
 $("body").on("click", ".tab-clicker", (e) => {
   let value = e.currentTarget.getAttribute("tab-value")
-  let newDivId = `search-${value}-content`
-  $("#searcher-content").html(`<div id="${newDivId}"/>`)
-
-  let searchRequest
 
   if (value === "players") {
-    searchRequest = new RequestForList({
-      sorting: playerSorting,
-      filter: playerFilter,
-      displayContent: displayPlayers,
-      searcher: PlayerApiRequestHelper.search,
-      id: newDivId
-    })
+    searchPlayers()
   }
   if (value === "admins") {
-    searchRequest = new RequestForList({
-      sorting: adminSorting,
-      filter: adminFilter,
-      displayContent: displayAdmins,
-      searcher: AdminApiRequestHelper.search,
-      id: newDivId
-    })
+    searchAdmins()
   }
-
-  searchRequest.setId(newDivId)
-
-  searchRequest.display()
 })
+
+searchPlayers()

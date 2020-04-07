@@ -3,7 +3,6 @@ package kg.task.dreamfield.service.word
 import kg.task.dreamfield.domain.paging.PageInfo
 import kg.task.dreamfield.domain.paging.SortInfo
 import kg.task.dreamfield.domain.user.Player
-import kg.task.dreamfield.domain.word.PlayerCurrentWord
 import kg.task.dreamfield.domain.word.Word
 import kg.task.dreamfield.domain.word.WordStatus
 import kg.task.dreamfield.domain.word.paging.WordFilterRequest
@@ -54,7 +53,7 @@ internal class DefaultPlayerCurrentWordSearchService(
                 ),
                 filter = WordFilterRequest(
                         status = WordStatus.VISIBLE,
-                        searchParameter = null
+                        value = null
                 )
         )
     }

@@ -1,27 +1,74 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dream Field</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Dream Field</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 <body>
 <header id="header">
 </header>
 <div class="container">
-    <h1>Admin page</h1>
+  <div class="d-flex justify-content-center mb-5">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-word-modal">
+      Добавить Слово
+    </button>
+  </div>
+
+  <div id="word-searcher-content"></div>
+
+
 </div>
 
-<script src="/script/libs/jquery-3.4.1.min.js"></script>
-<script src="/script/libs/bootstrap.min.js"></script>
-<script src="/script/libs/popper.min.js"></script>
-<script src="/script/models.js"></script>
-<script src="/script/api.js"></script>
-<script src="/script/tools.js"></script>
-<script src="/pages/admin/index.js"></script>
-<script src="index.js"></script>
+
+<div class="modal fade" id="add-word-modal" tabindex="-1" role="dialog" aria-labelledby="add-word-modal-label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="add-word-modal-label">Добавить пользователя</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="form-group">
+            <label for="create-word-value">Слово</label>
+            <input type="text" class="form-control" id="create-word-value">
+            <div class="error-message field-message" id="create-word-word-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="create-word-description">Описание</label>
+            <input type="email" class="form-control" id="create-word-description">
+            <div class="error-message field-message" id="create-word-description-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="create-word-score">Баллы</label>
+            <input type="number" class="form-control" id="create-word-score">
+            <div class="error-message field-message" id="create-word-score-error"></div>
+          </div>
+          <div class="error-message server-message" id="server-error-response"></div>
+          <button class="btn btn-primary" id="word-create-btn" onclick="createWord()">Создать</button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/script/libs/jquery-3.4.1.min.js"></script>
+  <script src="/script/libs/bootstrap.min.js"></script>
+  <script src="/script/libs/popper.min.js"></script>
+  <script src="/script/models.js"></script>
+  <script src="/script/api.js"></script>
+  <script src="/script/tools.js"></script>
+  <script src="/pages/admin/index.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>

@@ -1,19 +1,28 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dream Field</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Dream Field</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <header id="header"></header>
 
 <div class="container">
-    <h1>Admin page</h1>
+  <div class="d-flex justify-content-center mb-3">
+    <button id="search-statistics-players-btn" tab-value="players"
+            class="tab-clicker search-statistics-btn btn btn-outline-info mr-3">Игроки
+    </button>
+    <button id="search-statistics-words-btn" tab-value="words"
+            class="tab-clicker search-statistics-btn btn btn-outline-info">
+      Слова
+    </button>
+  </div>
+  <div id="searcher-content"></div>
 </div>
 
 <script src="/script/libs/jquery-3.4.1.min.js"></script>
@@ -25,6 +34,20 @@
 <script src="index.js"></script>
 <script>
   header.setActive("admin-main")
+
+  $("body").on("click", ".tab-clicker", (e) => {
+    let value = e.currentTarget.getAttribute("tab-value")
+
+    if (value === "players") {
+      showPlayersStatistics()
+    }
+    if (value === "words") {
+      showWordsStatistics()
+    }
+  })
+
+
+  showPlayersStatistics()
 </script>
 </body>
 </html>

@@ -4,7 +4,6 @@ import com.querydsl.core.BooleanBuilder
 import kg.task.dreamfield.domain.word.QWord.word
 import kg.task.dreamfield.domain.word.Word
 import kg.task.dreamfield.domain.word.WordStatus
-import kg.task.dreamfield.domain.user.paging.PlayerSearchRequest
 import kg.task.dreamfield.domain.word.paging.WordFilterRequest
 import kg.task.dreamfield.domain.word.paging.WordSearchRequest
 import kg.task.dreamfield.domain.word.request.AddWordRequest
@@ -23,6 +22,7 @@ interface WordService {
     fun getById(id: Long): Word
     fun create(request: AddWordRequest): Word
     fun search(request: WordSearchRequest): Page<Word>
+    fun updateStatus(word: Word, newStatus: WordStatus): Word
 }
 
 @Service
@@ -61,6 +61,15 @@ internal class DefaultWordService(
         return wordRepository.save(word)
     }
 
+    override fun updateStatus(word: Word, newStatus: WordStatus): Word {
+        return word.apply {
+            status = newStatus
+
+            wordRepository.save(this)
+        }
+
+    }
+
     @Transactional(readOnly = true)
     override fun search(request: WordSearchRequest): Page<Word> {
         val predicate = BooleanBuilder()
@@ -71,6 +80,6 @@ internal class DefaultWordService(
 
     private fun search(predicate: BooleanBuilder, filter: WordFilterRequest) {
         filter.status?.let { predicate.and(word.status.eq(it)) }
-        filter.searchParameter?.let { predicate.and(word.value.containsIgnoreCase(it)) }
+        filter.value?.let { predicate.and(word.value.containsIgnoreCase(it)) }
     }
 }

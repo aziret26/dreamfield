@@ -6,11 +6,13 @@ import kg.task.dreamfield.dto.http.user.AdminDto
 import kg.task.dreamfield.dto.http.user.paging.AdminSearchRequestDto
 import kg.task.dreamfield.dto.http.user.update.UpdateAdminUserRequestDto
 import kg.task.dreamfield.endpoint.user.AdminUserEndpoint
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1/admins")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 class AdminController(
         private val adminUserEndpoint: AdminUserEndpoint
 ) {

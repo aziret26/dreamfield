@@ -39,6 +39,6 @@ private val Sort.Direction.order: Order
 
 
 data class WordFilterRequest(
-        val searchParameter: String?,
+        val value: String?,
         val status: WordStatus?
 )

@@ -35,8 +35,7 @@ private fun Admin.toPrincipal(): AdminPrincipal = AdminPrincipal(
         email = this.email,
         password = this.password,
         id = this.id!!,
-        role = RolePrincipal(this.role.code.toString()),
-        permissions = setOf()
+        role = RolePrincipal(this.role.code.toString())
 )
 
 private fun Player.toPrincipal() = PlayerPrincipal(

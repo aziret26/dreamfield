@@ -99,3 +99,25 @@ class GuessWord {
   }
 
 }
+
+class CurrentPlayerStatistics {
+  attemptsFailed
+  attemptsSuccess
+  attemptsTotal
+  scoresAchieved
+  uniqueWords
+
+  constructor({
+                attemptsFailed,
+                attemptsSuccess,
+                attemptsTotal,
+                scoresAchieved,
+                uniqueWords
+              }) {
+    this.attemptsFailed = attemptsFailed || 0
+    this.attemptsSuccess = attemptsSuccess || 0
+    this.attemptsTotal = attemptsTotal || 0
+    this.scoresAchieved = scoresAchieved || 0
+    this.uniqueWords = uniqueWords || 0
+  }
+}
