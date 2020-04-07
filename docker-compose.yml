@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  dream_field:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_HOST=df_postgres
+      - POSTGRES_DB=dream_field
+      - POSTGRES_PORT=5435
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=user_pswd
+      - REDIS_PORT=6379
+      - REDIS_HOST=df_redis
+      - REDIS_DATABASE=0
+    ports:
+      - 8080:8080
+    networks:
+      df_lan:
+        aliases:
+          - df_internal_lan
+    container_name: df_back
+    depends_on:
+      - df_postgres
+      - df_redis
+
+  df_redis:
+    image: "redis:6.0-rc-alpine"
+    ports:
+      - 6379:6379
+    networks:
+      df_lan:
+        aliases:
+          - df_internal_lan
+    container_name: df_redis
+
+  df_postgres:
+    image: "postgres:12.2-alpine"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=user_pswd
+      - POSTGRES_DB=dream_field
+    ports:
+      - 5433:5432
+    networks:
+      df_lan:
+        aliases:
+          - df_internal_lan
+    container_name: df_postgres
+
+  df_nginx:
+    image: "nginx:1.17.9-alpine"
+    volumes:
+    - ./front:/data
+    - ./docker:/etc/nginx/conf.d/:ro
+    networks:
+      df_lan:
+        aliases:
+          - df_internal_lan
+    ports:
+      - 80:80
+    container_name: df_nginx
+networks:
+  df_lan:

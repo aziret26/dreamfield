@@ -26,10 +26,10 @@ data class PlayerSortRequestDto(
 
 data class PlayerFilterRequestDto(
         @field:Size(min = 1, max = 255)
-        val name: String,
+        val name: String?,
 
         @field:Email
         @field:Size(min = 1, max = 255)
-        val email: String
+        val email: String?
 
 )

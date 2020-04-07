@@ -256,8 +256,6 @@ class Sorting extends Displayable {
 
   display = () => {
     let result = `
-<!--<div class=" mb-3">-->
-
 <div class="d-flex mr-2 mb-2">
   <label for="role" class="mr-2">Сортировать</label>
   <select class="custom-select width-fit-content" id="sort-by">
@@ -281,10 +279,16 @@ class Sorting extends Displayable {
   }
 
   getRequestObject = () => {
-    return {
-      sortBy: $("#sort-by").val(),
-      sortDirection: $("#sort-direction").val()
+    let result = {}
+    let hasValue = false
+    if ($("#sort-by").val()) {
+      result["sortBy"] = $("#sort-by").val()
+      hasValue = true
     }
+    if ($("#sort-direction").val()) {
+      result["sortBy"] = $("#sort-direction").val()
+    }
+    return hasValue ? result : null
   }
 }
 
@@ -343,10 +347,14 @@ class Filter extends Displayable {
 
   getRequestObject = () => {
     let result = {}
+    let hasValue = false
     this.filters.forEach((item) => {
-      result[item.code] = item.getValue()
+      if (item.getValue()) {
+        result[item.code] = item.getValue()
+        hasValue = true
+      }
     })
-    return result
+    return hasValue ? result : null
   }
 }
 
@@ -435,8 +443,14 @@ class RequestForList extends Displayable {
 
   getRequestObject = () => {
     let result = {}
-    result["sorting"] = this.getSortingRequestObject()
-    result["filters"] = this.getFilterRequestObject()
+    let reqSorting = this.getSortingRequestObject()
+    let reqFilter = this.getFilterRequestObject()
+    if (reqSorting) {
+      result["sorting"] = reqSorting
+    }
+    if (reqFilter) {
+      result["filters"] = reqFilter
+    }
     result["pageRequest"] = {
       page: this.paging.currentPage || 1,
       limit: 15

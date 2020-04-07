@@ -122,12 +122,12 @@ adminSorting.addItem(new SortItem({name: "Имя", code: "NAME"}))
 adminSorting.addItem(new SortItem({name: "Email", code: "EMAIL"}))
 
 let adminFilter = new Filter()
-adminFilter.addItem(new FilterText({name: "Имя", code: "NAME"}))
-adminFilter.addItem(new FilterText({name: "Email", code: "EMAIL"}))
+adminFilter.addItem(new FilterText({name: "Имя", code: "name"}))
+adminFilter.addItem(new FilterText({name: "Email", code: "email"}))
 
 let playerFilter = new Filter()
-playerFilter.addItem(new FilterText({name: "Имя", code: "NAME"}))
-playerFilter.addItem(new FilterText({name: "Email", code: "EMAIL"}))
+playerFilter.addItem(new FilterText({name: "Имя", code: "name"}))
+playerFilter.addItem(new FilterText({name: "Email", code: "email"}))
 
 function searchPlayers() {
   $(".search-users-btn").removeClass("btn-info")
